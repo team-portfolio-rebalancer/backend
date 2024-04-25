@@ -1,6 +1,7 @@
 package com.portfolio.rebalancer.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +37,6 @@ public class CategoryAsset {
     @Column(nullable = false)
     private Integer aimPercentage;
 
-    @Column(nullable = false)
-    private String color;
-
+    @Embedded
+    private Color color;
 }

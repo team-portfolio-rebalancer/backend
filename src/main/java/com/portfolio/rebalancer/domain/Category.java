@@ -1,6 +1,7 @@
 package com.portfolio.rebalancer.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,8 +29,8 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String color;
+    @Embedded
+    private Color color;
 
     @OneToMany(mappedBy = "category")
     private final List<CategoryAsset> assets = new ArrayList<>();
@@ -37,6 +38,6 @@ public class Category {
     public Category(final Long userId, final String name, final String color) {
         this.userId = userId;
         this.name = name;
-        this.color = color;
+        this.color = new Color(color);
     }
 }
