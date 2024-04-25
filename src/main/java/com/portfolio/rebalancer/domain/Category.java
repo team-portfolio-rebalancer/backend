@@ -18,15 +18,25 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Category {
 
-    @OneToMany(mappedBy = "category")
-    private final List<CategoryAsset> assets = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private Long userId;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String color;
+
+    @OneToMany(mappedBy = "category")
+    private final List<CategoryAsset> assets = new ArrayList<>();
+
+    public Category(final Long userId, final String name, final String color) {
+        this.userId = userId;
+        this.name = name;
+        this.color = color;
+    }
 }
