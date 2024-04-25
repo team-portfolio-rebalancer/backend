@@ -3,7 +3,7 @@ spring:
     active: local
 
 springdoc:
-  packagesToScan: rebalancer
+  packagesToScan: com.portfolio.rebalancer
   swagger-ui:
     path: /api-docs
     groups:
