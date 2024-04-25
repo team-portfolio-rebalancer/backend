@@ -3,11 +3,13 @@ package com.portfolio.rebalancer.acceptance;
 import static org.hamcrest.Matchers.notNullValue;
 
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.support.DatabaseCleanUp;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,13 @@ public class CategoryAcceptanceTest {
     @LocalServerPort
     int port;
 
+    @Autowired
+    private DatabaseCleanUp databaseCleanUp;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
+        databaseCleanUp.execute();
     }
 
     @DisplayName("사용자가 카테고리를 설정하고 200 OK를 반환한다.")
