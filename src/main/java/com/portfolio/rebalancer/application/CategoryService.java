@@ -1,7 +1,7 @@
 package com.portfolio.rebalancer.application;
 
-import com.portfolio.rebalancer.domain.Category;
-import com.portfolio.rebalancer.domain.CategoryRepository;
+import com.portfolio.rebalancer.domain.category.Category;
+import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

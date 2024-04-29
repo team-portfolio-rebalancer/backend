@@ -1,4 +1,4 @@
-package com.portfolio.rebalancer.domain;
+package com.portfolio.rebalancer.domain.category;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

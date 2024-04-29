@@ -1,5 +1,7 @@
 package com.portfolio.rebalancer.domain;
 
+import com.portfolio.rebalancer.domain.category.Category;
+import com.portfolio.rebalancer.domain.color.Color;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

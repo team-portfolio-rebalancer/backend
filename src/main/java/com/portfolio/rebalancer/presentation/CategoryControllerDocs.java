@@ -20,22 +20,42 @@ public interface CategoryControllerDocs {
                     examples = {
                             @ExampleObject(name = "유저 아이디가 입력되지 않음", value = """
                                     {
-                                        "message" : "입력값이 없습니다."
+                                        "success": false,
+                                        "error": {
+                                            "code": "INPUT_001",
+                                            "message": "회사명이 입력되지 않았습니다."
+                                        },
+                                        "data": null
                                     }
                                     """),
                             @ExampleObject(name = "이름이 입력되지 않음", value = """
                                     {
-                                        "message" : "입력값이 없습니다."
+                                        "success": false,
+                                        "error": {
+                                            "code": "INPUT_001",
+                                            "message": "입력값이 없습니다."
+                                        },
+                                        "data": null
                                     }
                                     """),
                             @ExampleObject(name = "색상이 입력되지 않음", value = """
                                     {
-                                        "message" : "입력값이 없습니다."
+                                        "success": false,
+                                        "error": {
+                                            "code": "INPUT_001",
+                                            "message": "입력값이 없습니다."
+                                        },
+                                        "data": null
                                     }
                                     """),
                             @ExampleObject(name = "색상 형식이 잘못됨", value = """
                                     {
-                                        "message" : "색상 형식이 맞지 않습니다."
+                                        "success": false,
+                                        "error": {
+                                            "code": "INPUT_002",
+                                            "message": "색상 형식이 맞지 않습니다."
+                                        },
+                                        "data": null
                                     }
                                     """)
                     }))

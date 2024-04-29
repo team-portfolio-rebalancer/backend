@@ -2,6 +2,9 @@ package com.portfolio.rebalancer.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.portfolio.rebalancer.domain.color.Color;
+import com.portfolio.rebalancer.domain.color.ColorErrorCode;
+import com.portfolio.rebalancer.domain.exception.RebalancerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -13,7 +16,7 @@ class ColorTest {
     @ValueSource(strings = {"FFFFFF", "#FFFFF", "#FFFFFFF", "#FFFFFG"})
     void throws_exception_when_regex_is_wrong(String color) {
         // given & when & then
-        assertThatThrownBy(() -> new Color(color)).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(Color.REGEX_ERROR_MESSEAGE);
+        assertThatThrownBy(() -> new Color(color)).isInstanceOf(RebalancerException.class)
+                .hasMessage(ColorErrorCode.INVALID_REGEX.getMessage());
     }
 }

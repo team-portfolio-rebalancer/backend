@@ -1,6 +1,6 @@
 package com.portfolio.rebalancer.dto.request;
 
-import com.portfolio.rebalancer.domain.Color;
+import com.portfolio.rebalancer.domain.color.Color;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CategoryRequest {
 
-    @NotNull(message = InvalidInputMessage.BLANK)
+    @NotNull(message = RequestErrorCode.BLANK)
     private Long userId;
 
-    @NotBlank(message = InvalidInputMessage.BLANK)
+    @NotBlank(message = RequestErrorCode.BLANK)
     private String name;
 
-    @NotBlank(message = InvalidInputMessage.BLANK)
-    @Pattern(regexp = Color.REGEX, message = InvalidInputMessage.COLOR_REGEX)
+    @NotBlank(message = RequestErrorCode.BLANK)
+    @Pattern(regexp = Color.REGEX, message = RequestErrorCode.COLOR_REGEX)
     private String color;
 }
