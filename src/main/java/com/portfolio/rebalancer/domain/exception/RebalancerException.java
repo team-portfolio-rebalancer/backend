@@ -7,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class RebalancerException extends RuntimeException {
 
-    private final int statusCode;
-    private final String errorCode;
-    private final String message;
+	private final int statusCode;
+	private final String errorCode;
+	private final String message;
 
-    public RebalancerException(ErrorCode code) {
-        statusCode = code.getStatusCode();
-        errorCode = code.getErrorCode();
-        message = code.getMessage();
-    }
+	public RebalancerException(ErrorCode code) {
+		statusCode = code.getStatusCode();
+		errorCode = code.getErrorCode();
+		message = code.getMessage();
+	}
 }

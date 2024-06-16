@@ -1,7 +1,9 @@
 package com.portfolio.rebalancer.domain;
 
+import com.portfolio.rebalancer.domain.asset.Asset;
 import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.color.Color;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -21,24 +23,24 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CategoryAsset {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asset_id")
-    private Asset asset;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "asset_id")
+	private Asset asset;
 
-    @Column(nullable = false)
-    private Long amount;
+	@Column(nullable = false)
+	private Long amount;
 
-    @Column(nullable = false)
-    private Integer aimPercentage;
+	@Column(nullable = false)
+	private Integer aimPercentage;
 
-    @Embedded
-    private Color color;
+	@Embedded
+	private Color color;
 }
