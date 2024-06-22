@@ -1,4 +1,4 @@
-package com.portfolio.rebalancer.domain.color;
+package com.portfolio.rebalancer.domain.category;
 
 import com.portfolio.rebalancer.domain.exception.ErrorCode;
 
@@ -7,8 +7,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum ColorErrorCode implements ErrorCode {
-	INVALID_REGEX(400, "COLOR_001", "색상의 형식이 맞지 않습니다."),
+public enum CategoryErrorCode implements ErrorCode {
+
+	CATEGORY_NOT_FOUND(400, "CATEGORY_001", "해당 id의 카테고리가 없습니다."),
 	;
 
 	private final int statusCode;

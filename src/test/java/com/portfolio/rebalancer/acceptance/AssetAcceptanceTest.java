@@ -11,14 +11,14 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.dto.request.AssetRequest;
 import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
 @SpringBootTest(properties = "spring.session.store-type=none", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CategoryAcceptanceTest {
+public class AssetAcceptanceTest {
 
 	@LocalServerPort
 	int port;
@@ -32,21 +32,21 @@ public class CategoryAcceptanceTest {
 		databaseCleanUp.execute();
 	}
 
-	@DisplayName("사용자가 카테고리를 설정하고 200 OK를 반환한다.")
+	@DisplayName("사용자가 자산을 저장하고 200 OK를 반환한다.")
 	@Test
 	void create() {
 		// given
-		Long userId = 1L;
-		String name = "주식";
-		String color = "#FFFFF0";
-		CategoryRequest categoryRequest = new CategoryRequest(1L, name, color);
+		String code = "360200";
+		String name = "ACE 미국S&P500";
+		Long price = 16558L;
+		AssetRequest assetRequest = new AssetRequest(code, name, price);
 
 		// when
 		ValidatableResponse response = RestAssured.given().log().all()
-			.body(categoryRequest)
+			.body(assetRequest)
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().post("/categories")
+			.when().post("/assets")
 			.then().log().all();
 
 		// then

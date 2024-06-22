@@ -1,7 +1,11 @@
 package com.portfolio.rebalancer.domain.category;
 
-import com.portfolio.rebalancer.domain.CategoryAsset;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.portfolio.rebalancer.domain.categoryasset.CategoryAsset;
 import com.portfolio.rebalancer.domain.color.Color;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -10,8 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,25 +23,25 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Category {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@OneToMany(mappedBy = "category")
+	private final List<CategoryAsset> assets = new ArrayList<>();
 
-    @Column(nullable = false)
-    private Long userId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private Long userId;
 
-    @Embedded
-    private Color color;
+	@Column(nullable = false)
+	private String name;
 
-    @OneToMany(mappedBy = "category")
-    private final List<CategoryAsset> assets = new ArrayList<>();
+	@Embedded
+	private Color color;
 
-    public Category(final Long userId, final String name, final String color) {
-        this.userId = userId;
-        this.name = name;
-        this.color = new Color(color);
-    }
+	public Category(final Long userId, final String name, final String color) {
+		this.userId = userId;
+		this.name = name;
+		this.color = new Color(color);
+	}
 }

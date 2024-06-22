@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.dto.request.AssetRequest;
 import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
 @SpringBootTest
-class CategoryServiceTest {
+public class AssetServiceTest {
 
 	@Autowired
-	private CategoryService categoryService;
+	private AssetService assetService;
 
 	@Autowired
 	private DatabaseCleanUp databaseCleanUp;
@@ -25,14 +25,14 @@ class CategoryServiceTest {
 		databaseCleanUp.execute();
 	}
 
-	@DisplayName("카테고리를 저장한다.")
+	@DisplayName("자산을 저장한다.")
 	@Test
-	void 카테고리_생성() {
+	void 자산_생성() {
 		// given
-		CategoryRequest request = new CategoryRequest(1L, "주식", "#FFFFFF");
+		AssetRequest request = new AssetRequest("360200", "ACE 미국S&P500", 16558L);
 
 		// when
-		Long saveId = categoryService.save(request.getUserId(), request);
+		Long saveId = assetService.save(request);
 
 		// then
 		assertThat(saveId).isNotNull();

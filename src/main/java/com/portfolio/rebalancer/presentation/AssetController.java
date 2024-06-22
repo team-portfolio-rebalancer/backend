@@ -8,22 +8,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.portfolio.rebalancer.application.CategoryService;
-import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.application.AssetService;
+import com.portfolio.rebalancer.dto.request.AssetRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/assets")
 @RequiredArgsConstructor
-public class CategoryController implements CategoryControllerDocs {
+public class AssetController implements AssetControllerDocs {
 
-	private final CategoryService categoryService;
+	private final AssetService assetService;
 
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody @Valid final CategoryRequest request) {
-		Long id = categoryService.save(request.getUserId(), request);
-		return ResponseEntity.created(URI.create("/categories/" + id)).build();
+	public ResponseEntity<Void> create(@RequestBody @Valid final AssetRequest request) {
+		Long id = assetService.save(request);
+		return ResponseEntity.created(URI.create("/assets/" + id)).build();
 	}
 }
