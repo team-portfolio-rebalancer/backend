@@ -1,4 +1,4 @@
-package com.portfolio.rebalancer.domain;
+package com.portfolio.rebalancer.domain.categoryasset;
 
 import com.portfolio.rebalancer.domain.asset.Asset;
 import com.portfolio.rebalancer.domain.category.Category;
@@ -43,4 +43,18 @@ public class CategoryAsset {
 
 	@Embedded
 	private Color color;
+
+	public CategoryAsset(
+		final Category category,
+		final Asset asset,
+		final Long amount,
+		final Integer aimPercentage,
+		final String color
+	) {
+		this.category = category;
+		this.asset = asset;
+		this.amount = amount;
+		this.aimPercentage = aimPercentage;
+		this.color = new Color(color);
+	}
 }

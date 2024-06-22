@@ -3,7 +3,7 @@ package com.portfolio.rebalancer.domain.category;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.portfolio.rebalancer.domain.CategoryAsset;
+import com.portfolio.rebalancer.domain.categoryasset.CategoryAsset;
 import com.portfolio.rebalancer.domain.color.Color;
 
 import jakarta.persistence.Column;
@@ -25,13 +25,17 @@ public class Category {
 
 	@OneToMany(mappedBy = "category")
 	private final List<CategoryAsset> assets = new ArrayList<>();
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Column(nullable = false)
 	private Long userId;
+
 	@Column(nullable = false)
 	private String name;
+
 	@Embedded
 	private Color color;
 
