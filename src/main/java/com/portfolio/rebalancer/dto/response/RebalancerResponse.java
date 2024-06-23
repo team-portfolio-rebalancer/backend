@@ -8,16 +8,16 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class RebalancerResponse<T> {
 
-    private final boolean success;
-    private final ErrorResponse error;
-    private final T data;
+	private final boolean success;
+	private final ErrorResponse error;
+	private final T data;
 
-    public static <T> RebalancerResponse<T> success(T data) {
-        return new RebalancerResponse<>(true, null, data);
-    }
+	public static <T> RebalancerResponse<T> success(T data) {
+		return new RebalancerResponse<>(true, null, data);
+	}
 
-    public static <T> RebalancerResponse<T> fail(String errorCode, String message) {
-        ErrorResponse error = new ErrorResponse(errorCode, message);
-        return new RebalancerResponse<>(false, error, null);
-    }
+	public static <T> RebalancerResponse<T> fail(String errorCode, String message) {
+		ErrorResponse error = new ErrorResponse(errorCode, message);
+		return new RebalancerResponse<>(false, error, null);
+	}
 }
