@@ -11,6 +11,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import com.portfolio.rebalancer.domain.category.Category;
+import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
 import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
@@ -26,13 +28,20 @@ public class CategoryAcceptanceTest {
 	@Autowired
 	private DatabaseCleanUp databaseCleanUp;
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	private Long categoryId;
+
 	@BeforeEach
 	void setUp() {
 		RestAssured.port = port;
 		databaseCleanUp.execute();
+		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
+		categoryId = category.getId();
 	}
 
-	@DisplayName("사용자가 카테고리를 설정하고 200 OK를 반환한다.")
+	@DisplayName("카테고리를 저장하고 200 OK를 반환한다.")
 	@Test
 	void create() {
 		// given
@@ -42,15 +51,55 @@ public class CategoryAcceptanceTest {
 		CategoryRequest categoryRequest = new CategoryRequest(1L, name, color);
 
 		// when
-		ValidatableResponse response = RestAssured.given().log().all()
-			.body(categoryRequest)
-			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().post("/categories")
-			.then().log().all();
+		ValidatableResponse response = post("/categories", categoryRequest);
 
 		// then
 		response.statusCode(HttpStatus.CREATED.value())
 			.header("Location", notNullValue());
+	}
+
+	@DisplayName("카테고리 아이디로 조회하고 200 OK를 반환한다.")
+	@Test
+	void findById() {
+		// given
+		int id = categoryId.intValue();
+
+		// when
+		ValidatableResponse response = get("/categories/" + id);
+
+		// then
+		response.statusCode(HttpStatus.OK.value())
+			.body("id", equalTo(id));
+	}
+
+	@DisplayName("모든 카테고리를 조회하고 200 OK를 반환한다.")
+	@Test
+	void findAll() {
+		// given
+		categoryRepository.save(new Category(1L, "채권", "#FFFFFF"));
+		categoryRepository.save(new Category(1L, "현금", "#FFFFFF"));
+
+		// when
+		ValidatableResponse response = get("/categories");
+
+		// then
+		response.statusCode(HttpStatus.OK.value())
+			.body("size()", equalTo(3));
+	}
+
+	private ValidatableResponse post(final String uri, final Object requestBody) {
+		return RestAssured.given().log().all()
+			.body(requestBody)
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().post(uri)
+			.then().log().all();
+	}
+
+	private ValidatableResponse get(final String uri) {
+		return RestAssured.given().log().all()
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().get(uri)
+			.then().log().all();
 	}
 }
