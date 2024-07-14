@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.dto.request.CategoryUpdatingRequest;
 import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
 import io.restassured.RestAssured;
@@ -87,6 +88,28 @@ public class CategoryAcceptanceTest {
 			.body("size()", equalTo(3));
 	}
 
+	@DisplayName("카테고리를 수정하고 200 OK를 반환한다.")
+	@Test
+	void updateById() {
+		// given
+		CategoryUpdatingRequest categoryUpdatingRequest = new CategoryUpdatingRequest("주식", "#000000");
+
+		// when
+		ValidatableResponse response = patch("/categories/" + categoryId, categoryUpdatingRequest);
+
+		// then
+		response.statusCode(HttpStatus.OK.value())
+			.body("data.name", equalTo(categoryUpdatingRequest.getName()))
+			.body("data.color", equalTo(categoryUpdatingRequest.getColor()));
+	}
+
+	private ValidatableResponse get(final String uri) {
+		return RestAssured.given().log().all()
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().get(uri)
+			.then().log().all();
+	}
+
 	private ValidatableResponse post(final String uri, final Object requestBody) {
 		return RestAssured.given().log().all()
 			.body(requestBody)
@@ -96,10 +119,12 @@ public class CategoryAcceptanceTest {
 			.then().log().all();
 	}
 
-	private ValidatableResponse get(final String uri) {
+	private ValidatableResponse patch(final String uri, final Object requestBody) {
 		return RestAssured.given().log().all()
+			.body(requestBody)
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().get(uri)
+			.when().patch(uri)
 			.then().log().all();
 	}
 }
