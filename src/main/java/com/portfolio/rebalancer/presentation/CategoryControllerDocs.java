@@ -96,13 +96,13 @@ public interface CategoryControllerDocs {
 					"""),
 			}))
 	})
-	ResponseEntity<CategoryResponse> findById(Long id);
+	ResponseEntity<RebalancerResponse<CategoryResponse>> findById(Long id);
 
 	@Operation(summary = "카테고리 전체 조회")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "카테고리 전체 조회 성공")
 	})
-	ResponseEntity<List<CategoryResponse>> findAll();
+	ResponseEntity<RebalancerResponse<List<CategoryResponse>>> findAll();
 
 	@Operation(summary = "카테고리 수정")
 	@ApiResponses(value = {

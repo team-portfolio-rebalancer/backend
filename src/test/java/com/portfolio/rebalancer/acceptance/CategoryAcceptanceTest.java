@@ -70,7 +70,7 @@ public class CategoryAcceptanceTest {
 
 		// then
 		response.statusCode(HttpStatus.OK.value())
-			.body("id", equalTo(id));
+			.body("data.id", equalTo(id));
 	}
 
 	@DisplayName("모든 카테고리를 조회하고 200 OK를 반환한다.")
@@ -85,7 +85,7 @@ public class CategoryAcceptanceTest {
 
 		// then
 		response.statusCode(HttpStatus.OK.value())
-			.body("size()", equalTo(3));
+			.body("data.size()", equalTo(3));
 	}
 
 	@DisplayName("카테고리를 수정하고 200 OK를 반환한다.")

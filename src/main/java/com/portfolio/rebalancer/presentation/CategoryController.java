@@ -35,15 +35,15 @@ public class CategoryController implements CategoryControllerDocs {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoryResponse> findById(@PathVariable Long id) {
+	public ResponseEntity<RebalancerResponse<CategoryResponse>> findById(@PathVariable Long id) {
 		CategoryResponse response = categoryService.findById(id);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(RebalancerResponse.success(response));
 	}
 
 	@GetMapping
-	public ResponseEntity<List<CategoryResponse>> findAll() {
+	public ResponseEntity<RebalancerResponse<List<CategoryResponse>>> findAll() {
 		List<CategoryResponse> response = categoryService.findAll();
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(RebalancerResponse.success(response));
 	}
 
 	@PatchMapping("/{id}")
