@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.rebalancer.application.CategoryService;
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.dto.request.CategoryUpdatingRequest;
 import com.portfolio.rebalancer.dto.response.CategoryResponse;
+import com.portfolio.rebalancer.dto.response.RebalancerResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,4 +46,12 @@ public class CategoryController implements CategoryControllerDocs {
 		return ResponseEntity.ok(response);
 	}
 
+	@PatchMapping("/{id}")
+	public ResponseEntity<RebalancerResponse<CategoryResponse>> updateById(
+		@PathVariable Long id,
+		@RequestBody @Valid CategoryUpdatingRequest request
+	) {
+		CategoryResponse response = categoryService.updateById(id, request);
+		return ResponseEntity.ok(RebalancerResponse.success(response));
+	}
 }
