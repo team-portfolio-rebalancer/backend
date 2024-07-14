@@ -33,7 +33,7 @@ class CategoryServiceTest {
 	@BeforeEach
 	void setUp() {
 		databaseCleanUp.execute();
-		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
+		Category category = categoryRepository.save(new Category(1L, "주식", null));
 		categoryId = category.getId();
 	}
 
@@ -41,7 +41,7 @@ class CategoryServiceTest {
 	@Test
 	void 카테고리_생성() {
 		// given
-		CategoryRequest request = new CategoryRequest(1L, "주식", "#FFFFFF");
+		CategoryRequest request = new CategoryRequest(1L, "주식", null);
 
 		// when
 		Long saveId = categoryService.save(request.getUserId(), request);
@@ -75,8 +75,8 @@ class CategoryServiceTest {
 	@Test
 	void 카테고리_전체_조회() {
 		// given & when
-		categoryRepository.save(new Category(1L, "채권", "#FFFFFF"));
-		categoryRepository.save(new Category(1L, "현금", "#FFFFFF"));
+		categoryRepository.save(new Category(1L, "채권", null));
+		categoryRepository.save(new Category(1L, "현금", null));
 
 		// then
 		assertThat(categoryService.findAll()).hasSize(3);

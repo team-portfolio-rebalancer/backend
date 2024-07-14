@@ -38,7 +38,7 @@ public class CategoryAcceptanceTest {
 	void setUp() {
 		RestAssured.port = port;
 		databaseCleanUp.execute();
-		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
+		Category category = categoryRepository.save(new Category(1L, "주식", null));
 		categoryId = category.getId();
 	}
 
@@ -46,10 +46,7 @@ public class CategoryAcceptanceTest {
 	@Test
 	void create() {
 		// given
-		Long userId = 1L;
-		String name = "주식";
-		String color = "#FFFFF0";
-		CategoryRequest categoryRequest = new CategoryRequest(1L, name, color);
+		CategoryRequest categoryRequest = new CategoryRequest(1L, "주식", null);
 
 		// when
 		ValidatableResponse response = post("/categories", categoryRequest);
@@ -77,8 +74,8 @@ public class CategoryAcceptanceTest {
 	@Test
 	void findAll() {
 		// given
-		categoryRepository.save(new Category(1L, "채권", "#FFFFFF"));
-		categoryRepository.save(new Category(1L, "현금", "#FFFFFF"));
+		categoryRepository.save(new Category(1L, "채권", null));
+		categoryRepository.save(new Category(1L, "현금", null));
 
 		// when
 		ValidatableResponse response = get("/categories");
@@ -92,7 +89,7 @@ public class CategoryAcceptanceTest {
 	@Test
 	void updateById() {
 		// given
-		CategoryUpdatingRequest categoryUpdatingRequest = new CategoryUpdatingRequest("주식", "#000000");
+		CategoryUpdatingRequest categoryUpdatingRequest = new CategoryUpdatingRequest("주식", null);
 
 		// when
 		ValidatableResponse response = patch("/categories/" + categoryId, categoryUpdatingRequest);
