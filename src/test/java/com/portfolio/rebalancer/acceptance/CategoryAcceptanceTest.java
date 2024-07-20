@@ -34,7 +34,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
 		Long userId = 1L;
 		String name = "주식";
 		String color = "#FFFFF0";
-		CategoryRequest categoryRequest = new CategoryRequest(1L, name, color);
+		CategoryRequest categoryRequest = new CategoryRequest(userId, name, color);
 
 		// when
 		ValidatableResponse response = post("/categories", categoryRequest);
