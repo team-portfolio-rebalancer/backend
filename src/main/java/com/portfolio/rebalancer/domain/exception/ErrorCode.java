@@ -2,9 +2,9 @@ package com.portfolio.rebalancer.domain.exception;
 
 public interface ErrorCode {
 
-    int getStatusCode();
+	int getStatusCode();
 
-    String getErrorCode();
+	String getErrorCode();
 
-    String getMessage();
+	String getMessage();
 }

@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum GlobalErrorCode implements ErrorCode {
 
-    NOT_CONTROLLED_ERROR(400, "GLOBAL_001", "다뤄지지 않은 에러입니다."),
-    ;
+	NOT_CONTROLLED_ERROR(400, "GLOBAL_001", "다뤄지지 않은 에러입니다."),
+	;
 
-    private final int statusCode;
-    private final String errorCode;
-    private final String message;
+	private final int statusCode;
+	private final String errorCode;
+	private final String message;
 }
