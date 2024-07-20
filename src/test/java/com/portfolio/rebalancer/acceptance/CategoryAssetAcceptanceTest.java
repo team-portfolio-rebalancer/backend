@@ -6,28 +6,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.dto.request.AssetRequest;
 import com.portfolio.rebalancer.dto.request.CategoryAssetRequest;
-import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
-@SpringBootTest(properties = "spring.session.store-type=none", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CategoryAssetAcceptanceTest {
-
-	@LocalServerPort
-	int port;
-
-	@Autowired
-	private DatabaseCleanUp databaseCleanUp;
+public class CategoryAssetAcceptanceTest extends AcceptanceTest {
 
 	@Autowired
 	CategoryRepository categoryRepository;
@@ -36,8 +24,6 @@ public class CategoryAssetAcceptanceTest {
 
 	@BeforeEach
 	void setUp() {
-		RestAssured.port = port;
-		databaseCleanUp.execute();
 		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
 		categoryId = category.getId();
 	}
@@ -57,12 +43,7 @@ public class CategoryAssetAcceptanceTest {
 		);
 
 		// when
-		ValidatableResponse response = RestAssured.given().log().all()
-			.body(categoryAssetRequest)
-			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().post("/category-assets")
-			.then().log().all();
+		ValidatableResponse response = post("/category-assets", categoryAssetRequest);
 
 		// then
 		response.statusCode(HttpStatus.CREATED.value())
