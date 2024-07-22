@@ -24,7 +24,7 @@ public class CategoryAssetAcceptanceTest extends AcceptanceTest {
 
 	@BeforeEach
 	void saveCategory() {
-		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
+		Category category = categoryRepository.save(new Category(1L, "주식", null));
 		categoryId = category.getId();
 	}
 
@@ -39,7 +39,7 @@ public class CategoryAssetAcceptanceTest extends AcceptanceTest {
 			assetRequest,
 			1L,
 			100,
-			"#FFFFFF"
+			null
 		);
 
 		// when

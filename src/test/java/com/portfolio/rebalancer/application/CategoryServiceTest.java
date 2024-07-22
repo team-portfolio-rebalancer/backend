@@ -17,7 +17,7 @@ class CategoryServiceTest extends ServiceTest {
 	@Test
 	void 카테고리_생성() {
 		// given
-		CategoryRequest request = new CategoryRequest(1L, "주식", "#FFFFFF");
+		CategoryRequest request = new CategoryRequest(1L, "주식", null);
 
 		// when
 		Long saveId = categoryService.save(request.getUserId(), request);

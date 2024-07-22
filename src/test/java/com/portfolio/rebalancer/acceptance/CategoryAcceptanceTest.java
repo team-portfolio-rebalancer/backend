@@ -18,7 +18,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
 		// given
 		Long userId = 1L;
 		String name = "주식";
-		String color = "#FFFFF0";
+		String color = null;
 		CategoryRequest categoryRequest = new CategoryRequest(userId, name, color);
 
 		// when
