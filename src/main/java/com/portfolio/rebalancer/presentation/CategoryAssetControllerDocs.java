@@ -1,9 +1,12 @@
 package com.portfolio.rebalancer.presentation;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.portfolio.rebalancer.dto.request.CategoryAssetRequest;
+import com.portfolio.rebalancer.dto.response.CategoryAssetResponse;
+import com.portfolio.rebalancer.dto.response.RebalancerResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -103,4 +106,33 @@ public interface CategoryAssetControllerDocs {
 			}))
 	})
 	ResponseEntity<Void> create(@RequestBody final CategoryAssetRequest request);
+
+	@Operation(summary = "카테고리 자산 상세 조회")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "카테고리 자산 상세 조회 성공"),
+		@ApiResponse(responseCode = "400", description = "입력 형식이 잘못됨", content = @Content(
+			examples = {
+				@ExampleObject(name = "아이디가 입력되지 않음", value = """
+					{
+					    "success": false,
+					    "error": {
+					        "code": "INPUT_001",
+					        "message": "입력값이 없습니다."
+					    },
+					    "data": null
+					}
+					"""),
+				@ExampleObject(name = "아이디 값이 잘못됨", value = """
+					{
+						"success": false,
+						"error": {
+							"code": "CATEGORY_ASSET_001",
+							"message": "해당 id의 카테고리가 없습니다."
+						},
+						"data": null
+					}
+					"""),
+			}))
+	})
+	ResponseEntity<RebalancerResponse<CategoryAssetResponse>> findById(@PathVariable Long id);
 }

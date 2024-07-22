@@ -1,7 +1,5 @@
 package com.portfolio.rebalancer.application;
 
-import java.util.Objects;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +9,12 @@ import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.category.CategoryErrorCode;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.domain.categoryasset.CategoryAsset;
+import com.portfolio.rebalancer.domain.categoryasset.CategoryAssetErrorCode;
 import com.portfolio.rebalancer.domain.categoryasset.CategoryAssetRepository;
 import com.portfolio.rebalancer.domain.exception.RebalancerException;
 import com.portfolio.rebalancer.dto.request.AssetRequest;
 import com.portfolio.rebalancer.dto.request.CategoryAssetRequest;
+import com.portfolio.rebalancer.dto.response.CategoryAssetResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,15 +31,20 @@ public class CategoryAssetService {
 	public Long save(final CategoryAssetRequest request) {
 
 		Long categoryId = request.getCategoryId();
-		Category foundCategory = categoryRepository.findById(categoryId)
+		Category category = categoryRepository.findById(categoryId)
 			.orElseThrow(() -> new RebalancerException(CategoryErrorCode.CATEGORY_NOT_FOUND));
 
 		AssetRequest assetRequest = request.getAssetRequest();
-		Asset foundAsset = findOrSaveAsset(assetRequest);
+		Asset asset = assetRepository.findByCode(assetRequest.getCode())
+			.orElseGet(() -> assetRepository.save(new Asset(
+				assetRequest.getCode(),
+				assetRequest.getName(),
+				assetRequest.getPrice()
+			)));
 
 		CategoryAsset categoryAsset = new CategoryAsset(
-			foundCategory,
-			foundAsset,
+			category,
+			asset,
 			request.getAmount(),
 			request.getAimPercentage(),
 			request.getColor()
@@ -49,19 +54,9 @@ public class CategoryAssetService {
 		return savedCategoryAsset.getId();
 	}
 
-	private Asset findOrSaveAsset(AssetRequest assetRequest) {
-		String code = assetRequest.getCode();
-		Asset foundAsset = assetRepository.findByCode(code);
-
-		if (Objects.isNull(foundAsset)) {
-			Asset asset = new Asset(
-				assetRequest.getCode(),
-				assetRequest.getName(),
-				assetRequest.getPrice()
-			);
-			foundAsset = assetRepository.save(asset);
-		}
-
-		return foundAsset;
+	public CategoryAssetResponse findById(final Long id) {
+		CategoryAsset categoryAsset = categoryAssetRepository.findById(id)
+			.orElseThrow(() -> new RebalancerException(CategoryAssetErrorCode.CATEGORY_ASSET_NOT_FOUND));
+		return CategoryAssetResponse.from(categoryAsset);
 	}
 }
