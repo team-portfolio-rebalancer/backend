@@ -1,5 +1,6 @@
 package com.portfolio.rebalancer.application;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +14,10 @@ import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.domain.categoryasset.CategoryAsset;
 import com.portfolio.rebalancer.domain.categoryasset.CategoryAssetRepository;
+import com.portfolio.rebalancer.domain.exception.RebalancerException;
 import com.portfolio.rebalancer.dto.request.AssetRequest;
 import com.portfolio.rebalancer.dto.request.CategoryAssetRequest;
+import com.portfolio.rebalancer.dto.response.CategoryAssetResponse;
 
 class CategoryAssetServiceTest extends ServiceTest {
 
@@ -69,4 +72,26 @@ class CategoryAssetServiceTest extends ServiceTest {
 		// then
 		assertNotNull(saveId);
 	}
+
+	@DisplayName("카테고리 자산을 아이디로 조회한다.")
+	@Test
+	void 카테고리_자산_상세_조회_성공() {
+		// givien & when
+		CategoryAssetResponse categoryAssetResponse = categoryAssetService.findById(categoryAssetId);
+
+		// then
+		assertThat(categoryAssetResponse.getId()).isEqualTo(categoryAssetId);
+	}
+
+	@DisplayName("없는 카테고리 자산 아이디로 조회하면 예외가 발생한다.")
+	@Test
+	void 카테고리_자산_상세_조회_실패() {
+		// given & when
+		Long notExistCategoryAssetId = categoryAssetId + 1L;
+
+		// then
+		assertThatThrownBy(() -> categoryAssetService.findById(notExistCategoryAssetId))
+			.isInstanceOf(RebalancerException.class);
+	}
+
 }
