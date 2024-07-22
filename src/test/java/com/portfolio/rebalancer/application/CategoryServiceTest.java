@@ -2,28 +2,16 @@ package com.portfolio.rebalancer.application;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
-import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
-@SpringBootTest
-class CategoryServiceTest {
+class CategoryServiceTest extends ServiceTest {
 
 	@Autowired
 	private CategoryService categoryService;
-
-	@Autowired
-	private DatabaseCleanUp databaseCleanUp;
-
-	@BeforeEach
-	void setUp() {
-		databaseCleanUp.execute();
-	}
 
 	@DisplayName("카테고리를 저장한다.")
 	@Test

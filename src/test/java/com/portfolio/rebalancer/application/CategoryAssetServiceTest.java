@@ -6,16 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.dto.request.AssetRequest;
 import com.portfolio.rebalancer.dto.request.CategoryAssetRequest;
-import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
-@SpringBootTest
-class CategoryAssetServiceTest {
+class CategoryAssetServiceTest extends ServiceTest {
 
 	@Autowired
 	private CategoryAssetService categoryAssetService;
@@ -23,14 +20,10 @@ class CategoryAssetServiceTest {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
-	@Autowired
-	DatabaseCleanUp databaseCleanUp;
-
 	private Long categoryId;
 
 	@BeforeEach
-	void setUp() {
-		databaseCleanUp.execute();
+	void saveCategory() {
 		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
 		categoryId = category.getId();
 	}
