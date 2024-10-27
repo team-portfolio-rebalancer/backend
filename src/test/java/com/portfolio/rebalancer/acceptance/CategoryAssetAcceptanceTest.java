@@ -23,7 +23,7 @@ public class CategoryAssetAcceptanceTest extends AcceptanceTest {
 	Long categoryId;
 
 	@BeforeEach
-	void setUp() {
+	void saveCategory() {
 		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
 		categoryId = category.getId();
 	}

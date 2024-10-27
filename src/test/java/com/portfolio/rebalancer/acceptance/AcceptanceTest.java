@@ -26,6 +26,13 @@ public class AcceptanceTest {
 		databaseCleanUp.execute();
 	}
 
+	protected ValidatableResponse get(final String uri) {
+		return RestAssured.given().log().all()
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().get(uri)
+			.then().log().all();
+	}
+
 	protected ValidatableResponse post(String uri, Object request) {
 		return RestAssured.given().log().all()
 			.body(request)
