@@ -6,28 +6,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
 import com.portfolio.rebalancer.dto.request.CategoryUpdatingRequest;
-import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
-@SpringBootTest(properties = "spring.session.store-type=none", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CategoryAcceptanceTest {
-
-	@LocalServerPort
-	int port;
-
-	@Autowired
-	private DatabaseCleanUp databaseCleanUp;
+public class CategoryAcceptanceTest extends AcceptanceTest {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -35,10 +23,8 @@ public class CategoryAcceptanceTest {
 	private Long categoryId;
 
 	@BeforeEach
-	void setUp() {
-		RestAssured.port = port;
-		databaseCleanUp.execute();
-		Category category = categoryRepository.save(new Category(1L, "주식", null));
+	void saveCategory() {
+		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
 		categoryId = category.getId();
 	}
 
@@ -98,30 +84,5 @@ public class CategoryAcceptanceTest {
 		response.statusCode(HttpStatus.OK.value())
 			.body("data.name", equalTo(categoryUpdatingRequest.getName()))
 			.body("data.color", equalTo(categoryUpdatingRequest.getColor()));
-	}
-
-	private ValidatableResponse get(final String uri) {
-		return RestAssured.given().log().all()
-			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().get(uri)
-			.then().log().all();
-	}
-
-	private ValidatableResponse post(final String uri, final Object requestBody) {
-		return RestAssured.given().log().all()
-			.body(requestBody)
-			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().post(uri)
-			.then().log().all();
-	}
-
-	private ValidatableResponse patch(final String uri, final Object requestBody) {
-		return RestAssured.given().log().all()
-			.body(requestBody)
-			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.accept(MediaType.APPLICATION_JSON_VALUE)
-			.when().patch(uri)
-			.then().log().all();
 	}
 }

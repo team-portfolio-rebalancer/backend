@@ -1,7 +1,5 @@
 package com.portfolio.rebalancer.application;
 
-import java.util.Objects;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,15 +29,20 @@ public class CategoryAssetService {
 	public Long save(final CategoryAssetRequest request) {
 
 		Long categoryId = request.getCategoryId();
-		Category foundCategory = categoryRepository.findById(categoryId)
+		Category category = categoryRepository.findById(categoryId)
 			.orElseThrow(() -> new RebalancerException(CategoryErrorCode.CATEGORY_NOT_FOUND));
 
 		AssetRequest assetRequest = request.getAssetRequest();
-		Asset foundAsset = findOrSaveAsset(assetRequest);
+		Asset asset = assetRepository.findByCode(assetRequest.getCode())
+			.orElseGet(() -> assetRepository.save(new Asset(
+				assetRequest.getCode(),
+				assetRequest.getName(),
+				assetRequest.getPrice()
+			)));
 
 		CategoryAsset categoryAsset = new CategoryAsset(
-			foundCategory,
-			foundAsset,
+			category,
+			asset,
 			request.getAmount(),
 			request.getAimPercentage(),
 			request.getColor()
@@ -47,21 +50,5 @@ public class CategoryAssetService {
 
 		CategoryAsset savedCategoryAsset = categoryAssetRepository.save(categoryAsset);
 		return savedCategoryAsset.getId();
-	}
-
-	private Asset findOrSaveAsset(AssetRequest assetRequest) {
-		String code = assetRequest.getCode();
-		Asset foundAsset = assetRepository.findByCode(code);
-
-		if (Objects.isNull(foundAsset)) {
-			Asset asset = new Asset(
-				assetRequest.getCode(),
-				assetRequest.getName(),
-				assetRequest.getPrice()
-			);
-			foundAsset = assetRepository.save(asset);
-		}
-
-		return foundAsset;
 	}
 }
