@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: local
+  jpa:
+    properties:
+      hibernate:
+        create_empty_composites:
+          enabled: true
 
 springdoc:
   packagesToScan: com.portfolio.rebalancer

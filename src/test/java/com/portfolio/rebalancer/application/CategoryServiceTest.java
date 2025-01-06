@@ -12,6 +12,7 @@ import com.portfolio.rebalancer.domain.category.Category;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.domain.exception.RebalancerException;
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.dto.request.CategoryUpdatingRequest;
 import com.portfolio.rebalancer.dto.response.CategoryResponse;
 import com.portfolio.rebalancer.support.DatabaseCleanUp;
 
@@ -32,7 +33,7 @@ class CategoryServiceTest {
 	@BeforeEach
 	void setUp() {
 		databaseCleanUp.execute();
-		Category category = categoryRepository.save(new Category(1L, "주식", "#FFFFFF"));
+		Category category = categoryRepository.save(new Category(1L, "주식", null));
 		categoryId = category.getId();
 	}
 
@@ -40,7 +41,7 @@ class CategoryServiceTest {
 	@Test
 	void 카테고리_생성() {
 		// given
-		CategoryRequest request = new CategoryRequest(1L, "주식", "#FFFFFF");
+		CategoryRequest request = new CategoryRequest(1L, "주식", null);
 
 		// when
 		Long saveId = categoryService.save(request.getUserId(), request);
@@ -74,10 +75,27 @@ class CategoryServiceTest {
 	@Test
 	void 카테고리_전체_조회() {
 		// given & when
-		categoryRepository.save(new Category(1L, "채권", "#FFFFFF"));
-		categoryRepository.save(new Category(1L, "현금", "#FFFFFF"));
+		categoryRepository.save(new Category(1L, "채권", null));
+		categoryRepository.save(new Category(1L, "현금", null));
 
 		// then
 		assertThat(categoryService.findAll()).hasSize(3);
+	}
+
+	@DisplayName("카테고리를 수정한다.")
+	@Test
+	void 카테고리_수정() {
+		// given
+		CategoryUpdatingRequest categoryUpdatingRequest = new CategoryUpdatingRequest("채권", "#000000");
+
+		// when
+		CategoryResponse categoryResponse = categoryService.updateById(categoryId, categoryUpdatingRequest);
+
+		// then
+		assertThat(categoryResponse)
+			.satisfies(response -> {
+				assertThat(response.getName()).isEqualTo(categoryUpdatingRequest.getName());
+				assertThat(response.getColor()).isEqualTo(categoryUpdatingRequest.getColor());
+			});
 	}
 }

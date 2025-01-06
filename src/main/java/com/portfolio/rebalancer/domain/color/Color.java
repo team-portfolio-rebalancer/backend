@@ -17,7 +17,7 @@ public class Color {
 	public static final String REGEX = "^#([a-fA-F0-9]{6})$";
 	static final String REGEX_ERROR_MESSAGE = "색상 형식이 맞지 않습니다.";
 
-	@Column(name = "color", nullable = false)
+	@Column(name = "color")
 	private String value;
 
 	public Color(final String value) {
@@ -26,6 +26,10 @@ public class Color {
 	}
 
 	private void validateRegex(final String value) {
+		if (value == null) {
+			return;
+		}
+
 		if (!Pattern.matches(REGEX, value)) {
 			throw new RebalancerException(ColorErrorCode.INVALID_REGEX);
 		}

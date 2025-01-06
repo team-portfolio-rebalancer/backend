@@ -14,13 +14,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "category")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Builder
 public class Category {
 
 	@OneToMany(mappedBy = "category")
@@ -43,5 +47,16 @@ public class Category {
 		this.userId = userId;
 		this.name = name;
 		this.color = new Color(color);
+	}
+
+	public void update(final Category updatingCategoryInfo) {
+
+		if (updatingCategoryInfo.getName() != null) {
+			this.name = updatingCategoryInfo.getName();
+		}
+
+		if (updatingCategoryInfo.getColor() != null) {
+			this.color = updatingCategoryInfo.getColor();
+		}
 	}
 }

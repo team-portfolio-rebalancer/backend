@@ -11,6 +11,7 @@ import com.portfolio.rebalancer.domain.category.CategoryErrorCode;
 import com.portfolio.rebalancer.domain.category.CategoryRepository;
 import com.portfolio.rebalancer.domain.exception.RebalancerException;
 import com.portfolio.rebalancer.dto.request.CategoryRequest;
+import com.portfolio.rebalancer.dto.request.CategoryUpdatingRequest;
 import com.portfolio.rebalancer.dto.response.CategoryResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,16 @@ public class CategoryService {
 		return categories.stream()
 			.map(CategoryResponse::from)
 			.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public CategoryResponse updateById(final Long id, final CategoryUpdatingRequest request) {
+		Category category = categoryRepository.findById(id)
+			.orElseThrow(() -> new RebalancerException(CategoryErrorCode.CATEGORY_NOT_FOUND));
+
+		Category updatingCategoryInfo = request.toDomain();
+		category.update(updatingCategoryInfo);
+
+		return CategoryResponse.from(category);
 	}
 }
